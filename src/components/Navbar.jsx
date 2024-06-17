@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const pages = ["Home", "Dashboard", "Courses"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -99,7 +99,7 @@ function Navbar() {
                     textDecoration: "none",
                     color: isActive ? "blue" : "black",
                   })}
-                  to={`/${page === "Home" ? "" : page.toLowerCase()}`}
+                  to={`/${page.toLowerCase()}`}
                 >
                   <Typography textAlign="center">{page}</Typography>
                 </NavLink>
@@ -137,7 +137,7 @@ function Navbar() {
                   textDecoration: "none",
                   color: isActive ? "blue" : "black",
                 })}
-                to={`/${page === "Home" ? "" : page.toLowerCase()}`}
+                to={`/${page.toLowerCase()}`}
               >
                 <Typography textAlign="center">{page}</Typography>
               </NavLink>
