@@ -10,14 +10,17 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/auth";
 
 const pages = ["Home", "Dashboard", "Courses"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Grades", "Calendar", "Preferences", "Logout"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+  const { removeAuthToken } = useAuthStore();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,8 +33,29 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e, index) => {
     setAnchorElUser(null);
+    console.log("clicked index", index);
+    switch (index) {
+      case 0:
+        navigate("/profile");
+        break;
+      case 1:
+        navigate("/grades");
+        break;
+      case 2:
+        navigate("/calendar");
+        break;
+      case 3:
+        navigate("/preferences");
+        break;
+      case 4:
+        removeAuthToken();
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -52,7 +76,7 @@ function Navbar() {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              // letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -98,6 +122,7 @@ function Navbar() {
                     paddingInline: 4,
                     textDecoration: "none",
                     color: isActive ? "blue" : "black",
+                    fontWeight: isActive ? "700" : "400",
                   })}
                   to={`/${page.toLowerCase()}`}
                 >
@@ -121,12 +146,12 @@ function Navbar() {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              // letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            SEKOLAH HINTERLAND
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
@@ -136,6 +161,7 @@ function Navbar() {
                   paddingInline: 4,
                   textDecoration: "none",
                   color: isActive ? "blue" : "black",
+                  fontWeight: isActive ? "700" : "400",
                 })}
                 to={`/${page.toLowerCase()}`}
               >
@@ -164,10 +190,13 @@ function Navbar() {
                 horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={(e) => handleCloseUserMenu(5)}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settings.map((setting, index) => (
+                <MenuItem
+                  key={setting}
+                  onClick={(e) => handleCloseUserMenu(e, index)}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
