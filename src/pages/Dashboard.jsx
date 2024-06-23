@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Layout from "../layout";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import useDebounce from "../hooks/useDebounce";
 import { API_URL } from "../constants";
 import { useAuthStore } from "../store/auth";
@@ -12,8 +12,8 @@ function Dashboard() {
     { name: "Matematika/MP3", src: "bg3.png" },
     { name: "Pendidikan Agama/MP4", src: "bg4.png" },
   ];
-  const [courses, setCourses] = useState(initialCourses);
-  const [search, setSearch] = useState("");
+  const [courses] = useState(initialCourses);
+  const [search] = useState("");
   const debouncedValue = useDebounce(search, 500);
   const { token } = useAuthStore();
 
@@ -64,7 +64,7 @@ function Dashboard() {
                   justifyContent: "center",
                   border: "1px solid #D9D9D9",
                   borderRadius: 2,
-                  margin: 1
+                  margin: 1,
                 }}
               >
                 <Box
@@ -123,7 +123,6 @@ function Dashboard() {
           />
         </Box> */}
         <Box sx={{ borderBottom: "1px solid #000000", opacity: 0.25 }}></Box>
-
       </Box>
     </Layout>
   );

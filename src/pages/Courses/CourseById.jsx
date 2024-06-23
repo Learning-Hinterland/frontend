@@ -1,16 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../layout";
-import {
-  Box,
-  Button,
-  ButtonBase,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate, useParams } from "react-router-dom";
@@ -50,6 +40,7 @@ function CourseById() {
   useEffect(() => {
     getCourseById();
     getLessonByCourseId();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

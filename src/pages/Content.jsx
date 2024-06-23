@@ -1,24 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import Layout from "../layout";
 import { API_URL } from "../constants";
 import { useAuthStore } from "../store/auth";
 
 function ContentByMaterialId() {
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
   const { id } = useParams();
-  const [course, setCourse] = useState({});
+  const [course] = useState({});
   const [content, setContent] = useState([]);
   const { token } = useAuthStore();
   console.log("id from param", id);
@@ -38,6 +32,7 @@ function ContentByMaterialId() {
 
   useEffect(() => {
     getContentsByMaterialId();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

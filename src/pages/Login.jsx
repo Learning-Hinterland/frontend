@@ -80,9 +80,8 @@ export default function Login(props) {
     if (token) {
       navigate("/home");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
-
-  //   console.log(typeof classes.root);
 
   const [account, setAccount] = React.useState({ email: "", password: "" });
 

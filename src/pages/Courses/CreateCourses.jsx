@@ -1,47 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Layout from "../../layout";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import useDebounce from "../../hooks/useDebounce";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
-// "id": 1,
-// "name": "Pengujian Perangkat Lunak",
-// "description": "Kursus mendalam tentang teknik pengujian perangkat lunak.",
-// "cover_url": "https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&w=800",
-// "lecturer_id": 3
 function CreateCourses() {
-  const initialCourses = [
-    // { name: "Bahasa Indonesia/MP1", src: "bg1.png" },
-    // { name: "Bahasa Inggris/MP2", src: "bg2.png" },
-    // { name: "Matematika/MP3", src: "bg3.png" },
-    // { name: "Pendidikan Agama/MP4", src: "bg4.png" },
-  ];
-  const [courses, setCourses] = useState(initialCourses);
+  const initialCourses = [];
+  const [, setCourses] = useState(initialCourses);
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 500);
   const { token } = useAuthStore();
-  const [period, setPeriod] = useState("");
   const [course, setCourse] = React.useState({
     name: "",
     description: "",
     cover_url: "",
   });
 
-  const handlePeriodChange = (event) => {
-    setPeriod(event.target.value);
-  };
   const searchCourse = useCallback(async () => {
     const res = await fetch(`${API_URL}/courses?search=${search}`, {
       method: "GET",
@@ -54,29 +28,6 @@ function CreateCourses() {
     setCourses(json.data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
-
-  const getBackgroundImage = (index) => {
-    const idx = index % 4;
-    let bgImage = "bg1.png";
-    switch (idx) {
-      case 0:
-        bgImage = "bg1.png";
-        break;
-      case 1:
-        bgImage = "bg2.png";
-        break;
-      case 2:
-        bgImage = "bg3.png";
-        break;
-      case 3:
-        bgImage = "bg4.png";
-        break;
-      default:
-        bgImage = "bg1.png";
-        break;
-    }
-    return bgImage;
-  };
 
   const getCourses = async () => {
     const res = await fetch(`${API_URL}/courses`, {
@@ -109,6 +60,7 @@ function CreateCourses() {
 
   useEffect(() => {
     getCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
