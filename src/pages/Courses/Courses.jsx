@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Layout from "../layout";
+import Layout from "../../layout";
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -9,10 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import useDebounce from "../hooks/useDebounce";
-import { API_URL } from "../constants";
-import { useAuthStore } from "../store/auth";
-
+import useDebounce from "../../hooks/useDebounce";
+import { API_URL } from "../../constants";
+import { useAuthStore } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
+// "id": 1,
+// "name": "Pengujian Perangkat Lunak",
+// "description": "Kursus mendalam tentang teknik pengujian perangkat lunak.",
+// "cover_url": "https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&w=800",
+// "lecturer_id": 3
 function Courses() {
   const initialCourses = [
     // { name: "Bahasa Indonesia/MP1", src: "bg1.png" },
@@ -20,6 +26,7 @@ function Courses() {
     // { name: "Matematika/MP3", src: "bg3.png" },
     // { name: "Pendidikan Agama/MP4", src: "bg4.png" },
   ];
+  const navigate = useNavigate();
   const [courses, setCourses] = useState(initialCourses);
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 500);
@@ -95,11 +102,29 @@ function Courses() {
           My Courses
         </Typography>
 
-        <Typography
-          sx={{ fontWeight: 700, fontSize: { xs: 14, md: 20 }, mt: 6 }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: 6,
+          }}
         >
-          Course Overview
-        </Typography>
+          <Typography sx={{ fontWeight: 700, fontSize: { xs: 14, md: 20 } }}>
+            Course Overview
+          </Typography>
+
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/courses/create")}
+            sx={{ m: 1 }}
+          >
+            Create Course
+          </Button>
+        </Box>
 
         <Box sx={{ borderBottom: "1px solid #000000", opacity: 0.25 }}></Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -145,7 +170,9 @@ function Courses() {
         >
           {courses.map((c, idx) => {
             return (
-              <Box
+              <Button
+                key={`course-${idx}`}
+                onClick={() => navigate(`${c.id}`)}
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -153,11 +180,12 @@ function Courses() {
                   border: "1px solid #D9D9D9",
                   borderRadius: 2,
                   margin: 1,
+                  maxWidth: 300,
                 }}
               >
                 <Box
                   sx={{
-                    backgroundImage: `url('${getBackgroundImage(idx)}')`,
+                    backgroundImage: `url('${c.cover_url}')`,
                     height: 100,
                     minWidth: { xs: 100, md: 300 },
                   }}
@@ -170,7 +198,7 @@ function Courses() {
                       paddingInline: 1,
                       fontSize: 10,
                       fontWeight: 700,
-                      width: 80,
+                      width: 100,
                       margin: 1,
                       borderRadius: 1,
                     }}
@@ -189,7 +217,7 @@ function Courses() {
                 >
                   {c.name}
                 </Box>
-              </Box>
+              </Button>
             );
           })}
         </Box>
