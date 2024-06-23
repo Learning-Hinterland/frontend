@@ -15,10 +15,10 @@ import { useAuthStore } from "../store/auth";
 
 function Courses() {
   const initialCourses = [
-    { name: "Bahasa Indonesia/MP1", src: "bg1.png" },
-    { name: "Bahasa Inggris/MP2", src: "bg2.png" },
-    { name: "Matematika/MP3", src: "bg3.png" },
-    { name: "Pendidikan Agama/MP4", src: "bg4.png" },
+    // { name: "Bahasa Indonesia/MP1", src: "bg1.png" },
+    // { name: "Bahasa Inggris/MP2", src: "bg2.png" },
+    // { name: "Matematika/MP3", src: "bg3.png" },
+    // { name: "Pendidikan Agama/MP4", src: "bg4.png" },
   ];
   const [courses, setCourses] = useState(initialCourses);
   const [search, setSearch] = useState("");
@@ -38,12 +38,53 @@ function Courses() {
     });
     const json = await res.json();
     console.log("course search", json);
+    setCourses(json.data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
+
+  const getBackgroundImage = (index) => {
+    const idx = index % 4;
+    let bgImage = "bg1.png";
+    switch (idx) {
+      case 0:
+        bgImage = "bg1.png";
+        break;
+      case 1:
+        bgImage = "bg2.png";
+        break;
+      case 2:
+        bgImage = "bg3.png";
+        break;
+      case 3:
+        bgImage = "bg4.png";
+        break;
+      default:
+        bgImage = "bg1.png";
+        break;
+    }
+    return bgImage;
+  };
+
+  const getCourses = async () => {
+    const res = await fetch(`${API_URL}/courses`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const json = await res.json();
+    console.log("get course ", json);
+    setCourses(json.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
 
   useEffect(() => {
     searchCourse();
   }, [debouncedValue, searchCourse]);
+
+  useEffect(() => {
+    getCourses();
+  }, []);
 
   return (
     <Layout>
@@ -116,7 +157,7 @@ function Courses() {
               >
                 <Box
                   sx={{
-                    backgroundImage: `url('${c.src}')`,
+                    backgroundImage: `url('${getBackgroundImage(idx)}')`,
                     height: 100,
                     minWidth: { xs: 100, md: 300 },
                   }}
