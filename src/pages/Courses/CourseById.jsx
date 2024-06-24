@@ -40,7 +40,7 @@ function CourseById() {
   useEffect(() => {
     getCourseById();
     getLessonByCourseId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -89,7 +89,7 @@ function CourseById() {
               )}
               <Box
                 component={"div"}
-                onClick={navigate(`/contents/${l.id}`)}
+                onClick={() => navigate(`/contents/${l.id}`)}
                 sx={{ p: 4 }}
               >
                 <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
