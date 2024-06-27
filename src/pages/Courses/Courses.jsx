@@ -71,7 +71,7 @@ function Courses() {
             Course Overview
           </Typography>
 
-          {data.role === "ROLE_ADMIN" && (
+          {data.role === "ROLE_LECTURER" && (
             <Button
               type="button"
               variant="contained"

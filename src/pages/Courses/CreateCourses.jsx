@@ -4,7 +4,9 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import useDebounce from "../../hooks/useDebounce";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
 function CreateCourses() {
+  const navigate = useNavigate();
   const initialCourses = [];
   const [, setCourses] = useState(initialCourses);
   const [search, setSearch] = useState("");
@@ -67,6 +69,7 @@ function CreateCourses() {
       const json = await response.json();
       if (json.status) {
         alert("Berhasil membuat course");
+        navigate('/courses')
       } else {
         alert(`Gagal membuat course, ${json.message}`);
       }

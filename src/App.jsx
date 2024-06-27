@@ -8,6 +8,7 @@ import CreateCourses from "./pages/Courses/CreateCourses.jsx";
 import CourseById from "./pages/Courses/CourseById.jsx";
 import ContentByMaterialId from "./pages/Content.jsx";
 import CreateMaterial from "./pages/Courses/CreateMaterial.jsx";
+import CreateContent from "./pages/Courses/CreateContent.jsx";
 
 function App() {
   return (
@@ -63,6 +64,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ContentByMaterialId />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contents/create/:id"
+          element={
+            <ProtectedRoute>
+              <CreateContent />
             </ProtectedRoute>
           }
         />

@@ -4,9 +4,10 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import useDebounce from "../../hooks/useDebounce";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CreateMaterial() {
+  const navigate = useNavigate();
   const initialCourses = [];
   const { id } = useParams();
   const [, setCourses] = useState(initialCourses);
@@ -38,12 +39,13 @@ function CreateMaterial() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...material, course_id: 0 }),
+        body: JSON.stringify({ ...material, course_id: id }),
       });
 
       const json = await response.json();
       if (json.status) {
         alert("Berhasil membuat material");
+        navigate(`/courses/${id}`);
       } else {
         alert(`Gagal membuat material, ${json.message}`);
       }
@@ -109,7 +111,7 @@ function CreateMaterial() {
             sx={{ mt: 4 }}
             onClick={onSubmit}
           >
-            Create Material
+            Buat Material
           </Button>
         </form>
       </Box>

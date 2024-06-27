@@ -104,7 +104,7 @@ function CourseById() {
           );
         })}
       </Box>
-      {data.role === "ROLE_ADMIN" && (
+      {data.role === "ROLE_LECTURER" && (
         <Box
           sx={{
             display: "flex",
