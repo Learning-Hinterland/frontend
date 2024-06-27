@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Layout from "../../layout";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import useDebounce from "../../hooks/useDebounce";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,11 +17,7 @@ import {
 function CreateContent() {
   const rteRef = useRef(null);
   const navigate = useNavigate();
-  const initialCourses = [];
   const { id } = useParams();
-  const [, setCourses] = useState(initialCourses);
-  const [search, setSearch] = useState("");
-  const debouncedValue = useDebounce(search, 500);
   const { token } = useAuthStore();
   const [content, setContent] = React.useState({
     title: "",
