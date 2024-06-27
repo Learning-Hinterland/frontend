@@ -53,7 +53,7 @@ function EditMaterial() {
       const json = await response.json();
       if (json.status) {
         alert("Berhasil edit material");
-        navigate(`/courses/${id}`);
+        navigate(`/courses`);
       } else {
         alert(`Gagal edit material, ${json.message}`);
       }

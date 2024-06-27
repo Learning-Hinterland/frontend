@@ -36,6 +36,7 @@ function CreateContent() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log('createContent id', typeof id, id)
     console.log("create content", content);
     try {
       const response = await fetch(`${API_URL}/contents`, {
@@ -45,7 +46,7 @@ function CreateContent() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...content, material_id: id, body: body }),
+        body: JSON.stringify({ ...content, material_id: parseInt(id), body: body }),
       });
 
       const json = await response.json();

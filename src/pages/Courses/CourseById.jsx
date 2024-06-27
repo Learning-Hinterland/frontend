@@ -94,7 +94,7 @@ function CourseById() {
                     type="button"
                     variant="contained"
                     color="primary"
-                    onClick={() => navigate(`/material/edit/${id}`)}
+                    onClick={() => navigate(`/material/edit/${l.id}`)}
                     sx={{ m: 1 }}
                   >
                     Edit
