@@ -88,17 +88,30 @@ function CourseById() {
                   }}
                 ></Box>
               )}
-              <Box
-                component={"div"}
-                onClick={() => navigate(`/contents/${l.id}`)}
-                sx={{ p: 4 }}
-              >
-                <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
-                  {l.title}
-                </Typography>
-                <Typography sx={{ fontWeight: 400, fontSize: 12 }}>
-                  {l.description}
-                </Typography>
+              <Box>
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => navigate(`/material/edit/${id}`)}
+                    sx={{ m: 1 }}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+                <Box
+                  component={"div"}
+                  onClick={() => navigate(`/contents/${l.id}`)}
+                  sx={{ p: 4 }}
+                >
+                  <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
+                    {l.title}
+                  </Typography>
+                  <Typography sx={{ fontWeight: 400, fontSize: 12 }}>
+                    {l.description}
+                  </Typography>
+                </Box>
               </Box>
             </>
           );
@@ -112,6 +125,15 @@ function CourseById() {
             alignItems: "center",
           }}
         >
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(`/courses/edit/${id}`)}
+            sx={{ m: 1 }}
+          >
+            Edit Kelas
+          </Button>
           <Button
             type="button"
             variant="contained"

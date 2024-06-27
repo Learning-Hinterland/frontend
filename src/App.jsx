@@ -9,6 +9,8 @@ import CourseById from "./pages/Courses/CourseById.jsx";
 import ContentByMaterialId from "./pages/Content.jsx";
 import CreateMaterial from "./pages/Courses/CreateMaterial.jsx";
 import CreateContent from "./pages/Courses/CreateContent.jsx";
+import EditCourses from "./pages/Courses/EditCourses.jsx";
+import EditMaterial from "./pages/Courses/EditMaterial.jsx";
 
 function App() {
   return (
@@ -58,6 +60,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/courses/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditCourses />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/contents/:id"
@@ -81,6 +91,15 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateMaterial />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/material/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditMaterial />
             </ProtectedRoute>
           }
         />
