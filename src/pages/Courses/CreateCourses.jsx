@@ -52,6 +52,27 @@ function CreateCourses() {
   const handleCreateCourse = async (e) => {
     e.preventDefault();
     console.log("create course", course);
+
+    try {
+      const response = await fetch(`${API_URL}/courses`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(course),
+      });
+
+      const json = await response.json();
+      if (json.status) {
+        alert("Berhasil membuat course");
+      } else {
+        alert(`Gagal membuat course, ${json.message}`);
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
 
   useEffect(() => {

@@ -4,12 +4,13 @@ import { Box, Button, Typography } from "@mui/material";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate, useParams } from "react-router-dom";
+
 function CourseById() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [course, setCourse] = useState({});
   const [lesson, setLesson] = useState([]);
-  const { token } = useAuthStore();
+  const { token, data } = useAuthStore();
   console.log("id from param", id);
 
   const getCourseById = async () => {
@@ -103,6 +104,25 @@ function CourseById() {
           );
         })}
       </Box>
+      {data.role === "ROLE_ADMIN" && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(`/material/create/${id}`)}
+            sx={{ m: 1 }}
+          >
+            Tambah Material
+          </Button>
+        </Box>
+      )}
     </Layout>
   );
 }

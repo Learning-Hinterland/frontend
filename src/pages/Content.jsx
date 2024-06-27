@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import Layout from "../layout";
@@ -10,7 +7,7 @@ import { API_URL } from "../constants";
 import { useAuthStore } from "../store/auth";
 
 function ContentByMaterialId() {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const { id } = useParams();
   const [course] = useState({});
   const [content, setContent] = useState([]);
@@ -32,7 +29,7 @@ function ContentByMaterialId() {
 
   useEffect(() => {
     getContentsByMaterialId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -65,14 +62,22 @@ function ContentByMaterialId() {
                   }}
                 ></Box>
               )}
-              <Box sx={{ p: 4 }}>
-                <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
-                  {c.title}
-                </Typography>
-                <Typography sx={{ fontWeight: 400, fontSize: 12 }}>
-                  {c.body}
-                </Typography>
-                <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+              <Box
+                sx={{
+                  p: 4,
+                  width: "100",
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
+                  sx={{
+                    // width: { xs: "100%", md: "50%" },
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <ReactPlayer
                     url={
                       c.video_url ||
@@ -80,6 +85,21 @@ function ContentByMaterialId() {
                     }
                   />
                 </Box>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  // onClick={() => navigate("/courses/create")}
+                  sx={{ m: 1, width: 50 }}
+                >
+                  Like
+                </Button>
+                <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
+                  {c.title}
+                </Typography>
+                <Typography sx={{ fontWeight: 400, fontSize: 12 }}>
+                  {c.body}
+                </Typography>
               </Box>
             </>
           );

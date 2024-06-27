@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CreateCourses from "./pages/Courses/CreateCourses.jsx";
 import CourseById from "./pages/Courses/CourseById.jsx";
 import ContentByMaterialId from "./pages/Content.jsx";
+import CreateMaterial from "./pages/Courses/CreateMaterial.jsx";
 
 function App() {
   return (
@@ -62,6 +63,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ContentByMaterialId />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/material/create/:id"
+          element={
+            <ProtectedRoute>
+              <CreateMaterial />
             </ProtectedRoute>
           }
         />

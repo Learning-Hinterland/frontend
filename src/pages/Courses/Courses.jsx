@@ -11,7 +11,8 @@ function Courses() {
   const [courses, setCourses] = useState(initialCourses);
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 500);
-  const { token } = useAuthStore();
+  const { token, data } = useAuthStore();
+  console.log("current user", data);
 
   const searchCourse = useCallback(async () => {
     const res = await fetch(`${API_URL}/courses?search=${search}`, {
@@ -70,19 +71,26 @@ function Courses() {
             Course Overview
           </Typography>
 
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/courses/create")}
-            sx={{ m: 1 }}
-          >
-            Create Course
-          </Button>
+          {data.role === "ROLE_ADMIN" && (
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/courses/create")}
+              sx={{ m: 1 }}
+            >
+              Create Course
+            </Button>
+          )}
         </Box>
 
         <Box sx={{ borderBottom: "1px solid #000000", opacity: 0.25 }}></Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-end" },
+          }}
+        >
           {/* <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="period-select-standard-label">Period</InputLabel>
             <Select
@@ -118,9 +126,10 @@ function Courses() {
         </Box>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexFlow: { xs: "column", md: "row wrap" },
+            display: { xs: "flex", md: "grid" },
+            gridTemplateColumns: { xs: "none", md: "1fr 1fr 1fr 1fr" },
+            justifyContent: { xs: "center", md: "none" },
+            flexFlow: { xs: "column", md: "none" },
           }}
         >
           {courses.map((c, idx) => {
@@ -135,14 +144,14 @@ function Courses() {
                   border: "1px solid #D9D9D9",
                   borderRadius: 2,
                   margin: 1,
-                  maxWidth: 300,
+                  maxWidth: { xs: "100%", md: 300 },
                 }}
               >
                 <Box
                   sx={{
                     backgroundImage: `url('${c.cover_url}')`,
                     height: 100,
-                    minWidth: { xs: 100, md: 300 },
+                    width: "100%",
                   }}
                 >
                   <Box
