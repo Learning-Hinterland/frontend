@@ -13,6 +13,7 @@ import {
   MenuSelectHeading,
   RichTextEditor,
 } from "mui-tiptap";
+import Swal from "sweetalert2";
 
 function CreateContent() {
   const rteRef = useRef(null);
@@ -36,7 +37,7 @@ function CreateContent() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log('createContent id', typeof id, id)
+    console.log("createContent id", typeof id, id);
     console.log("create content", content);
     try {
       const response = await fetch(`${API_URL}/contents`, {
@@ -46,18 +47,22 @@ function CreateContent() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...content, material_id: parseInt(id), body: body }),
+        body: JSON.stringify({
+          ...content,
+          material_id: parseInt(id),
+          body: body,
+        }),
       });
 
       const json = await response.json();
       if (json.status) {
-        alert("Berhasil membuat content");
+        Swal.fire("Berhasil membuat content", "", "success");
         navigate(`/contents/${id}`);
       } else {
-        alert(`Gagal membuat content, ${json.message}`);
+        Swal.fire(`Gagal membuat content, ${json.message}`, "", "error");
       }
     } catch (error) {
-      alert(error);
+      Swal.fire(`Gagal membuat content, ${error}`, "", "error");
     }
   };
 

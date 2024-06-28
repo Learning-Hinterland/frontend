@@ -5,6 +5,7 @@ import useDebounce from "../../hooks/useDebounce";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 function CreateCourses() {
   const navigate = useNavigate();
   const initialCourses = [];
@@ -68,13 +69,13 @@ function CreateCourses() {
 
       const json = await response.json();
       if (json.status) {
-        alert("Berhasil membuat course");
-        navigate('/courses')
+        Swal.fire("Berhasil membuat course", "", "success");
+        navigate("/courses");
       } else {
-        alert(`Gagal membuat course, ${json.message}`);
+        Swal.fire(`Gagal membuat course, ${json.message}`, "", "error");
       }
     } catch (error) {
-      alert(error);
+      Swal.fire(`Gagal membuat course, ${error}`, "", "error");
     }
   };
 

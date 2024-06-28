@@ -29,7 +29,7 @@ function Profile() {
       setProfile(json.data);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error) {
-      window.alert("Failed to get profile");
+      console.log("Failed to get profile");
     }
   };
   React.useEffect(() => {

@@ -1,52 +1,55 @@
 import React from "react";
-import Layout from "../../layout";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { API_URL } from "../../constants";
-import { useAuthStore } from "../../store/auth";
 import { useNavigate, useParams } from "react-router-dom";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { API_URL } from "../constants";
+import Layout from "../layout";
+import { useAuthStore } from "../store/auth";
 import Swal from "sweetalert2";
 
-function CreateMaterial() {
+function CreateAssignment() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { token } = useAuthStore();
-  const [material, setMaterial] = React.useState({
-    title: "",
-    description: "",
+  const [deadline, setDeadline] = React.useState("");
+  const [assignment, setAssignment] = React.useState({
+    content: "",
   });
+  console.log("content dr course id", id);
 
-  console.log("material dr course id", id);
+  const handleCreateAssignment = (property, event) => {
+    const assignmentCopy = { ...assignment };
+    assignmentCopy[property] = event.target.value;
 
-  const handleCreateMaterial = (property, event) => {
-    const materialCopy = { ...material };
-    materialCopy[property] = event.target.value;
-
-    setMaterial(materialCopy);
+    setAssignment(assignmentCopy);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("create material", material);
     try {
-      const response = await fetch(`${API_URL}/materials`, {
+      const response = await fetch(`${API_URL}/assignments`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...material, course_id: id }),
+        body: JSON.stringify({
+          ...assignment,
+          deadline,
+          material_id: parseInt(id),
+        }),
       });
 
       const json = await response.json();
       if (json.status) {
-        Swal.fire("Berhasil membuat material", "", "success");
-        navigate(`/courses/${id}`);
+        Swal.fire("Berhasil membuat tugas", "", "success");
+        navigate(-1);
       } else {
-        Swal.fire(`Gagal membuat material, ${json.message}`, "", "error");
+        Swal.fire(`Gagal membuat tugas, ${json.message}`, "", "error");
       }
     } catch (error) {
-      Swal.fire(error, "", "error");
+        Swal.fire(`Gagal membuat tugas, ${error}`, "", "error");
     }
   };
 
@@ -56,7 +59,7 @@ function CreateMaterial() {
         sx={{ paddingBlock: { xs: 1, md: 2 }, paddingInline: { xs: 2, md: 8 } }}
       >
         <Typography sx={{ fontWeight: 700, fontSize: { xs: 18, md: 24 } }}>
-          Tambah Material
+          Buat Tugas
         </Typography>
 
         <Box
@@ -69,37 +72,34 @@ function CreateMaterial() {
           }}
         >
           <Typography sx={{ fontWeight: 700, fontSize: { xs: 14, md: 20 } }}>
-            Lengkapi Info Material
+            Lengkapi Info Tugas
           </Typography>
         </Box>
 
         <Box sx={{ borderBottom: "1px solid #000000", opacity: 0.25 }}></Box>
         <form noValidate>
           <TextField
-            onChange={(event) => handleCreateMaterial("title", event)}
+            onChange={(event) => handleCreateAssignment("content", event)}
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="title"
-            label="Title"
-            name="title"
+            id="content"
+            label="Description"
+            name="content"
             type="text"
             autoFocus
           />
-          <TextField
-            onChange={(event) => handleCreateMaterial("description", event)}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            label="Description"
-            name="description"
-            type="text"
-            id="description"
+          <DateTimePicker
+            label="Deadline"
+            onChange={(event) => {
+              console.log("deadline", event.format());
+              setDeadline(event.format());
+            }}
+            sx={{ width: "100%" }}
           />
           <Button
-            disabled={material.description === "" || material.title === ""}
+            disabled={assignment.content === "" || deadline === ""}
             type="submit"
             fullWidth
             variant="contained"
@@ -107,7 +107,7 @@ function CreateMaterial() {
             sx={{ mt: 4 }}
             onClick={onSubmit}
           >
-            Buat Material
+            Buat Tugas
           </Button>
         </form>
       </Box>
@@ -115,4 +115,4 @@ function CreateMaterial() {
   );
 }
 
-export default CreateMaterial;
+export default CreateAssignment;

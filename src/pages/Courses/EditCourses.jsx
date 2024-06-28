@@ -4,6 +4,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { API_URL } from "../../constants";
 import { useAuthStore } from "../../store/auth";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 function EditCourses() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -51,13 +52,13 @@ function EditCourses() {
 
       const json = await response.json();
       if (json.status) {
-        alert("Berhasil edit course");
+        Swal.fire("Berhasil edit course", "", "success");
         navigate("/courses");
       } else {
-        alert(`Gagal edit course, ${json.message}`);
+        Swal.fire(`Gagal edit course, ${json.message}`, "", "error");
       }
     } catch (error) {
-      alert(error);
+        Swal.fire(`Gagal edit course, ${error}`, "", "error");
     }
   };
 

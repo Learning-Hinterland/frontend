@@ -1,21 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Layout from "../layout";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import useDebounce from "../hooks/useDebounce";
 import { API_URL } from "../constants";
 import { useAuthStore } from "../store/auth";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const initialCourses = [
-    { name: "Bahasa Indonesia/MP1", src: "bg1.png" },
-    { name: "Bahasa Inggris/MP2", src: "bg2.png" },
-    { name: "Matematika/MP3", src: "bg3.png" },
-    { name: "Pendidikan Agama/MP4", src: "bg4.png" },
-  ];
-  const [courses] = useState(initialCourses);
+  const navigate = useNavigate();
+  const [courses, setCourses] = useState();
   const [search] = useState("");
   const debouncedValue = useDebounce(search, 500);
-  const { token } = useAuthStore();
+  const { token, data } = useAuthStore();
 
   const searchCourse = useCallback(async () => {
     const res = await fetch(`${API_URL}/courses?search=${search}`, {
@@ -29,10 +25,29 @@ function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
+  const getCourses = async () => {
+    const res = await fetch(`${API_URL}/courses`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const json = await res.json();
+    console.log("dashboard get course ", json);
+    setCourses(json.data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
   useEffect(() => {
     searchCourse();
   }, [debouncedValue, searchCourse]);
 
+  useEffect(() => {
+    getCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log('auth data dashboard', data)
   return (
     <Layout>
       <Box
@@ -45,65 +60,76 @@ function Dashboard() {
         <Typography
           sx={{ fontWeight: 700, fontSize: { xs: 14, md: 20 }, mt: 6 }}
         >
-          Recently accessed Course
+          My Courses
         </Typography>
 
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexFlow: { xs: "column", md: "row wrap" },
+            display: { xs: "flex", md: "grid" },
+            gridTemplateColumns: { xs: "none", md: "1fr 1fr 1fr 1fr" },
+            justifyContent: { xs: "center", md: "none" },
+            flexFlow: { xs: "column", md: "none" },
           }}
         >
-          {courses.map((c, idx) => {
-            return (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  border: "1px solid #D9D9D9",
-                  borderRadius: 2,
-                  margin: 1,
-                }}
-              >
-                <Box
+          {courses
+            ?.filter((f) => {
+              if (data.role === "ROLE_STUDENT") return f.is_enrolled;
+              return f
+            })
+            .map((c, idx) => {
+              return (
+                <Button
+                  key={`course-${idx}`}
+                  onClick={() => navigate(`/courses/${c.id}`)}
                   sx={{
-                    backgroundImage: `url('${c.src}')`,
-                    height: 100,
-                    minWidth: { xs: 100, md: 300 },
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    border: "1px solid #D9D9D9",
+                    borderRadius: 2,
+                    margin: 1,
+                    maxWidth: { xs: "100%", md: 300 },
                   }}
                 >
                   <Box
                     sx={{
-                      background: "#0d6efd",
-                      color: "white",
-                      paddingBlock: 0.5,
-                      paddingInline: 1,
-                      fontSize: 10,
-                      fontWeight: 700,
-                      width: 80,
-                      margin: 1,
-                      borderRadius: 1,
+                      backgroundImage: `url('${c.cover_url}')`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      height: 100,
+                      width: "100%",
                     }}
                   >
-                    Mata Pelajaran
+                    <Box
+                      sx={{
+                        background: "green",
+                        color: "white",
+                        paddingBlock: 0.5,
+                        paddingInline: 1,
+                        fontSize: 10,
+                        fontWeight: 700,
+                        width: 100,
+                        margin: 1,
+                        borderRadius: 1,
+                      }}
+                    >
+                      Enrolled
+                    </Box>
+                    {/* <img src={c.src} alt={`course-${idx}`} width={200} /> */}
                   </Box>
-                  {/* <img src={c.src} alt={`course-${idx}`} width={200} /> */}
-                </Box>
-                <Box
-                  sx={{
-                    paddingBlock: 1,
-                    paddingInline: 2,
-                    textAlign: "left",
-                    fontSize: 12,
-                  }}
-                >
-                  {c.name}
-                </Box>
-              </Box>
-            );
-          })}
+                  <Box
+                    sx={{
+                      paddingBlock: 1,
+                      paddingInline: 2,
+                      textAlign: "left",
+                      fontSize: 12,
+                    }}
+                  >
+                    {c.name}
+                  </Box>
+                </Button>
+              );
+            })}
         </Box>
         {/* <Box sx={{ display: "flex", justifyContent: "center" }}>
           <TextField

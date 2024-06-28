@@ -150,8 +150,8 @@ function Courses() {
                 <Box
                   sx={{
                     backgroundImage: `url('${c.cover_url}')`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                     height: 100,
                     width: "100%",
                   }}
@@ -171,7 +171,23 @@ function Courses() {
                   >
                     Mata Pelajaran
                   </Box>
-                  {/* <img src={c.src} alt={`course-${idx}`} width={200} /> */}
+                  {c.is_enrolled && (
+                    <Box
+                      sx={{
+                        background: "green",
+                        color: "white",
+                        paddingBlock: 0.5,
+                        paddingInline: 1,
+                        fontSize: 10,
+                        fontWeight: 700,
+                        width: 100,
+                        margin: 1,
+                        borderRadius: 1,
+                      }}
+                    >
+                      Enrolled
+                    </Box>
+                  )}
                 </Box>
                 <Box
                   sx={{
