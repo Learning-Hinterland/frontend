@@ -14,7 +14,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth";
 
 const pages = ["Home", "Dashboard", "Courses"];
-const settings = ["Profile", "Grades", "Calendar", "Preferences", "Logout"];
+const settings = ["Profile", "Logout"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -41,18 +41,8 @@ function Navbar() {
         navigate("/profile");
         break;
       case 1:
-        navigate("/grades");
-        break;
-      case 2:
-        navigate("/calendar");
-        break;
-      case 3:
-        navigate("/preferences");
-        break;
-      case 4:
         removeAuthToken();
         break;
-
       default:
         break;
     }
@@ -173,7 +163,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar />
               </IconButton>
             </Tooltip>
             <Menu

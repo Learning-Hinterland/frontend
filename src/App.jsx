@@ -11,6 +11,7 @@ import CreateMaterial from "./pages/Courses/CreateMaterial.jsx";
 import CreateContent from "./pages/Courses/CreateContent.jsx";
 import EditCourses from "./pages/Courses/EditCourses.jsx";
 import EditMaterial from "./pages/Courses/EditMaterial.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function App() {
   return (
@@ -19,6 +20,14 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
 
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/home"
           element={
