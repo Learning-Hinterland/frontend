@@ -9,13 +9,23 @@ import {
   CardContent,
   FormControl,
   Grid,
+  MenuItem,
+  Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import Layout from "../layout";
+import Swal from "sweetalert2";
 
 function Profile() {
-  const { token } = useAuthStore();
+  const { token, data } = useAuthStore();
   const [profile, setProfile] = React.useState(null);
+  const [account, setAccount] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "student",
+  });
   const getProfileData = async () => {
     try {
       const res = await fetch(`${API_URL}/auth/me`, {
@@ -38,6 +48,53 @@ function Profile() {
   }, []);
 
   console.log("profile", profile);
+
+  const handleAccount = (property, event) => {
+    const accountCopy = { ...account };
+    accountCopy[property] = event.target.value;
+
+    setAccount(accountCopy);
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    console.log("account", account);
+    try {
+      const response = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: account.name,
+          email: account.email,
+          password: account.password,
+          role: account.role,
+        }),
+      });
+      const result = await response.json();
+      console.log("create user result", result);
+      if (result.status) {
+        Swal.fire("Berhasil membuat user", "", "success");
+        setAccount({
+          name: "",
+          email: "",
+          password: "",
+          role: "student",
+        });
+        //   navigate("/home");
+        //   setAuthData(result.data);
+        //   setAuthToken(result.data.token);
+      }
+      if (!result.status) {
+        Swal.fire(`Gagal membuat user, ${result.message}`, "", "error");
+      }
+    } catch (error) {
+      Swal.fire(error, "", "error");
+    }
+  };
   return (
     <Layout>
       <Box
@@ -162,7 +219,83 @@ function Profile() {
                   </CardContent>
                 </Card>
               </Grid>
+              {data?.role === "ROLE_ADMIN" && (
+                <Grid item md={11}>
+                  <Card sx={{ p: 4 }} variant="outlined">
+                    <Typography variant="h6">Create User</Typography>
+                    <form noValidate>
+                      <TextField
+                        onChange={(event) => handleAccount("name", event)}
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="name"
+                        label="Name"
+                        name="name"
+                        type="text"
+                        autoFocus
+                      />
+                      <TextField
+                        onChange={(event) => handleAccount("email", event)}
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        type="email"
+                        autoFocus
+                      />
+                      <TextField
+                        onChange={(event) => handleAccount("password", event)}
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                      />
+                      <Select
+                        fullWidth
+                        required
+                        id="demo-simple-select"
+                        value={account.role}
+                        label="Role"
+                        variant="outlined"
+                        margin="normal"
+                        onChange={(event) => handleAccount("role", event)}
+                      >
+                        <MenuItem value={"student"}>Student</MenuItem>
+                        <MenuItem value={"lecturer"}>Lecturer</MenuItem>
+                      </Select>
+                      <Button
+                        disabled={
+                          account.name === "" ||
+                          account.email === "" ||
+                          account.password === "" ||
+                          account.role === ""
+                        }
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        // sx={classes.submit}
+                        onClick={handleCreateUser}
+                        sx={{ mt: 4 }}
+                      >
+                        Create User
+                      </Button>
+                    </form>
+                  </Card>
+                </Grid>
+              )}
             </Grid>
+            <Grid container></Grid>
             {/* <Typography sx={{ fontWeight: 700, fontSize: { xs: 18, md: 28 } }}>
               Profile Info
             </Typography>
