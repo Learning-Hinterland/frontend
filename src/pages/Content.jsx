@@ -143,7 +143,7 @@ function Contents() {
             paddingBlock: { xs: 1, md: 2 },
             paddingInline: { xs: 2, md: 8 },
           }}
-            onClick={() => navigate(`/assignment/details/${materials.id}`)}
+            onClick={() => navigate(`/assignment/details/${materials.assignment.id}`)}
         >
           <Box sx={{ border: "1px solid #D5D5D5", p: 2 }}>
             <Typography sx={{ fontWeight: 700, fontSize: { xs: 18, md: 24 } }}>
