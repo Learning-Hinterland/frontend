@@ -300,12 +300,12 @@ function ContentById() {
                       <Typography
                         sx={{ fontWeight: 700, fontSize: { xs: 10, md: 14 } }}
                       >
-                        {c.content}
+                        {`${c?.user?.name}: ${c?.content}`}
                       </Typography>
                       <Typography
                         sx={{ fontWeight: 400, fontSize: { xs: 10, md: 14 } }}
                       >
-                        {getDeadline(c.date)}
+                        {getDeadline(c?.date)}
                       </Typography>
                     </Box>
                   );
